@@ -1,9 +1,0 @@
-file_format: "1"
-id: libre
-name: libre
-type: shield
-features:
-  - keys
-siblings:
-  - libre_left
-  - libre_right
