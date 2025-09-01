@@ -13,5 +13,6 @@ manifest:
       import: app/west.yml
     - name: zmk-keyboard-libre
       remote: libre
+      revision: main
   self:
     path: config
