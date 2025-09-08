@@ -1,0 +1,481 @@
+units:
+  #Spacing between keys to make them less cramped
+  spacing: 1
+  # margin added to push out board borders
+  board_margin: 2
+
+  #Pull to the left/down
+  pull: -u/2
+  #Push to thhe right/up
+  push: u/2
+  # Pull with added margin
+  mpull: pull - board_margin
+  # Push with added margin
+  mpush: push + board_margin
+
+  caseborder: 1.5
+
+points:
+  key:
+    #vertical gap between key locations 
+    padding: u + spacing
+    #Horizontal gap between key locations
+    spread: u + spacing
+  zones:
+    matrix:
+      key:
+        tags: main_keys
+      anchor:
+        #shift the whole board so that it can better transfer to the software
+        shift: [75,-150]
+      columns:
+        outer:
+          key.column_net: P017
+        pinky:
+          key.column_net: P020
+        ring:
+          key.stagger: 12
+          key.column_net: P022
+        middle:
+          key.stagger: 7
+          key.column_net: P024
+        index:
+          key.stagger: -6
+          key.column_net: P100
+        inner:
+          key.stagger: -2
+          key.column_net: P011
+        nano:
+          key.tags: nano_key
+      rows:
+        bottom:
+          row_net: P104
+        home:
+          row_net: P106
+        top:
+          row_net: P009
+        num:
+          row_net: P010
+    thumbkeys:
+      anchor:
+        ref: matrix_pinky_home
+        shift: [4.5u, -1.75u]
+      columns:
+        space:
+          key:
+            width: 2u
+            splay: 15
+            tags: thumb_key
+            column_net: P111
+      rows:
+        cluster:
+          row_net: P113
+  mirror:
+    ref: matrix_pinky_home
+    distance: 250
+
+outlines:
+  _keys_1:
+    - what: rectangle
+      where: main_keys
+      #size of the plate holes
+      size: 14
+      fillet: 0
+  _keys_2:
+    - what: rectangle
+      where: thumb_key
+      #size of the plate holes
+      size: [28, 14]
+      fillet: 0
+  keys:
+    - what: outline
+      name: _keys_1
+    - what: outline
+      name: _keys_2
+      operation: add
+  _demo_keys:
+    - what: rectangle
+      where: main_keys
+      size: u
+      fillet: 1
+
+  _left_nano:
+    - what: polygon
+      fillet: 1
+      points:
+        - ref: matrix_nano_num
+          shift: [mpull, mpush]
+        - ref: matrix_nano_num
+          shift: [push, mpush]
+        - ref: matrix_nano_home
+          shift: [push, pull]
+        - ref: matrix_nano_home
+          shift: [mpull, pull]
+  _right_nano:
+    - what: polygon
+      fillet: 1
+      points:
+        - ref: mirror_matrix_nano_num
+          shift: [mpull, mpush]
+        - ref: mirror_matrix_nano_num
+          shift: [push, mpush]
+        - ref: mirror_matrix_nano_home
+          shift: [push, pull]
+        - ref: mirror_matrix_nano_home
+          shift: [mpull, pull]
+
+  left_thumb:
+    - what: polygon
+      points:
+      #end of nano
+        - ref: matrix_nano_home
+          shift: [push, pull +1.5]
+      #Inner home to cover empty space
+        - ref: matrix_inner_home
+      #Pointer bottom
+        - ref: matrix_index_bottom
+          shift: [mpull + 2, mpull +5]
+      #Thumb 
+        - ref: thumbkeys_space_cluster
+          shift: [-u -board_margin, mpull - board_margin]
+        - ref: thumbkeys_space_cluster
+          shift: [u + board_margin, mpull -board_margin]
+      fillet: 1
+  right_thumb:
+    - what: polygon
+      points:
+      #end of nano
+        - ref: mirror_matrix_nano_home
+          shift: [push, pull +1.5]
+      #Inner home to cover empty space
+        - ref: mirror_matrix_inner_home
+      #Pointer bottom
+        - ref: mirror_matrix_index_bottom
+          shift: [mpull + 2, mpull +5]
+      #Thumb 
+        - ref: mirror_thumbkeys_space_cluster
+          shift: [-u -board_margin, mpull - board_margin]
+        - ref: mirror_thumbkeys_space_cluster
+          shift: [u + board_margin, mpull -board_margin]
+      fillet: 1
+
+  _demo_thumb:
+    - what: rectangle
+      where: thumbkeys_space_cluster
+      size: [2u, u]
+
+  _left_main_keys:
+    - what: polygon
+      fillet: 1
+      operation: stack
+      points:
+      # TOP
+        #Top left corner
+        - ref: matrix_outer_num
+          shift: [mpull, mpush]
+        #Top pinky right
+        - ref: matrix_pinky_num
+          shift: [push-1, mpush]
+        #Top ring left
+        - ref: matrix_ring_num
+          shift: [mpull, mpush]
+        #top ring right
+        - ref: matrix_ring_num
+          shift: [push -1, mpush]
+        #Top Middle left
+        - ref: matrix_middle_num
+          shift: [mpull, mpush]
+        # top middle right
+        - ref: matrix_middle_num
+          shift: [mpush, mpush]
+        #Top pointer left
+        - ref: matrix_index_num
+          shift: [pull +1, mpush] 
+        #Top pointer right
+        - ref: matrix_index_num
+          shift: [push, mpush]
+        #Top inner left
+        - ref: matrix_inner_num
+          shift: [pull - .99, mpush]
+        #Top right corner
+        - ref: matrix_inner_num
+          shift: [mpush, mpush]
+      #BOTTOM
+        #Bottom right corner
+        - ref: matrix_inner_bottom
+          shift: [mpush, mpull]
+        #Bottom inner left
+        - ref: matrix_inner_bottom
+          shift: [pull, mpull]
+        #Bottom pointer right
+        - ref: matrix_index_bottom
+          shift: [push, mpull]
+        #Bottom pointer left
+        - ref: matrix_index_bottom
+          shift: [mpull + 1, mpull]
+        #Bottom middle right
+        - ref: matrix_middle_bottom
+          shift: [push, mpull]
+        #Bottom middle left
+        - ref: matrix_middle_bottom
+          shift: [pull-1, mpull]
+        #Bottom ring right
+        - ref: matrix_ring_bottom
+          shift: [push, mpull]
+        #Bottom ring left
+        - ref: matrix_ring_bottom
+          shift: [pull +1, mpull]
+        #Bottom pinky right
+        - ref: matrix_pinky_bottom
+          shift: [mpush, mpull]
+        #Bottom left corner
+        - ref: matrix_outer_bottom
+          shift: [mpull, mpull]
+  _right_main_keys:
+    - what: polygon
+      fillet: 1
+      operation: stack
+      points:
+      # TOP
+        #Top left corner
+        - ref: mirror_matrix_outer_num
+          shift: [mpull, mpush]
+        #Top pinky right
+        - ref: mirror_matrix_pinky_num
+          shift: [push-1, mpush]
+        #Top ring left
+        - ref: mirror_matrix_ring_num
+          shift: [mpull, mpush]
+        #top ring right
+        - ref: mirror_matrix_ring_num
+          shift: [push -1, mpush]
+        #Top Middle left
+        - ref: mirror_matrix_middle_num
+          shift: [mpull, mpush]
+        # top middle right
+        - ref: mirror_matrix_middle_num
+          shift: [mpush, mpush]
+        #Top pointer left
+        - ref: mirror_matrix_index_num
+          shift: [pull +1, mpush] 
+        #Top pointer right
+        - ref: mirror_matrix_index_num
+          shift: [push, mpush]
+        #Top inner left
+        - ref: mirror_matrix_inner_num
+          shift: [pull - .99, mpush]
+        #Top right corner
+        - ref: mirror_matrix_inner_num
+          shift: [mpush, mpush]
+      #BOTTOM
+        #Bottom right corner
+        - ref: mirror_matrix_inner_bottom
+          shift: [mpush, mpull]
+        #Bottom inner left
+        - ref: mirror_matrix_inner_bottom
+          shift: [pull, mpull]
+        #Bottom pointer right
+        - ref: mirror_matrix_index_bottom
+          shift: [push, mpull]
+        #Bottom pointer left
+        - ref: mirror_matrix_index_bottom
+          shift: [mpull + 1, mpull]
+        #Bottom middle right
+        - ref: mirror_matrix_middle_bottom
+          shift: [push, mpull]
+        #Bottom middle left
+        - ref: mirror_matrix_middle_bottom
+          shift: [pull-1, mpull]
+        #Bottom ring right
+        - ref: mirror_matrix_ring_bottom
+          shift: [push, mpull]
+        #Bottom ring left
+        - ref: mirror_matrix_ring_bottom
+          shift: [pull +1, mpull]
+        #Bottom pinky right
+        - ref: mirror_matrix_pinky_bottom
+          shift: [mpush, mpull]
+        #Bottom left corner
+        - ref: mirror_matrix_outer_bottom
+          shift: [mpull, mpull] 
+
+  left_board:
+    - what: outline
+      name: _left_nano
+    - what: outline
+      name: left_thumb
+    - what: outline
+      name: _left_main_keys
+      operation: add
+
+  right_board:
+    - what: outline
+      name: _right_main_keys
+    - what: outline
+      name: right_thumb
+    - what: outline
+      name: _right_nano
+      operation: add
+
+  outline_with_keys:
+    - what: outline
+      name: left_board
+    - what: outline
+      name: _left_nano
+    - what: outline
+      name: right_board
+    - what: outline
+      name: _right_nano
+    - what: outline
+      name: keys
+      operation: stack
+
+  outline_with_full_keys:
+    - what: outline
+      name: _demo_keys
+    - what: outline
+      name: _demo_thumb
+    - what: outline
+      name: left_board
+    - what: outline 
+      name: right_board
+      operation: stack
+
+pcbs:
+  left_side:
+    outlines:
+      main:
+        outline: left_board
+    footprints:
+      main_keyswitches:
+        where: main_keys
+        what: mx 
+        params:
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180
+      thumb_keyswitch:
+        where: thumb_key
+        what: mx
+        params:
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      thumb_stabs:
+        what: Stab_2u
+        where: thumb_key
+
+      nice_nano:
+        what: Nice!Nano
+        params:
+          orientation: down
+        where:
+          ref: matrix_nano_num
+          shift: [-2, pull+1.5]
+          rotate: -90
+      main_diodes:
+        what: diode
+        where: main_keys
+        params: 
+          from: "{{colrow}}"
+          to: "{{row_net}}" 
+        adjust:
+          shift: [0,-9]
+          rotate: 180
+      thumb_diode:
+        what: diode
+        where: thumb_key
+        params: 
+          from: "{{colrow}}"
+          to: "{{row_net}}" 
+        adjust:
+          shift: [0,-9]
+          rotate: 180              
+      slider:
+        what: slider
+        where: 
+          - ref: matrix_outer_num
+            shift: [10, 9.5]
+        params:
+          from: pos
+          to: raw
+      powerport:
+        what: jstph
+        where: matrix_nano_home
+        params:
+          pos: pos
+          neg: GND
+        adjust:
+          shift: [4, 10]
+          rotate: -90
+  right_side:
+    outlines:
+      main:
+        outline: right_board
+    footprints:
+      main_keyswitches:
+        where: main_keys
+        what: mx 
+        params:
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+        adjust:
+          rotate: 180
+      thumb_keyswitch:
+        where: thumb_key
+        what: mx
+        params:
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      thumb_stabs:
+        what: Stab_2u
+        where: thumb_key
+
+      nice_nano:
+        what: Nice!Nano
+        params:
+          orientation: down
+        where:
+          ref: mirror_matrix_nano_num
+          shift: [-2, pull+1.5]
+          rotate: -90
+      main_diodes:
+        what: diode
+        where: main_keys
+        params: 
+          from: "{{colrow}}"
+          to: "{{row_net}}" 
+        adjust:
+          shift: [0,-9]
+          rotate: 180
+      thumb_diode:
+        what: diode
+        where: thumb_key
+        params: 
+          from: "{{colrow}}"
+          to: "{{row_net}}" 
+        adjust:
+          shift: [0,-9]
+          rotate: 180              
+      slider:
+        what: slider
+        where: 
+          - ref: mirror_matrix_outer_num
+            shift: [10, 9.5]
+        params:
+          from: pos
+          to: raw
+      powerport:
+        what: jstph
+        where: mirror_matrix_nano_home
+        params:
+          pos: pos
+          neg: GND
+        adjust:
+          shift: [4, 10]
+          rotate: -90
+
