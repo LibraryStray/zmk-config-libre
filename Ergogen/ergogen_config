@@ -111,6 +111,18 @@ outlines:
           shift: [push, pull]
         - ref: matrix_nano_home
           shift: [mpull, pull]
+  _left_nano_large:
+    - what: polygon
+      fillet: 1
+      points:
+        - ref: matrix_nano_num
+          shift: [mpull -caseborder, mpush+caseborder]
+        - ref: matrix_nano_num
+          shift: [push+caseborder, mpush+caseborder]
+        - ref: matrix_nano_home
+          shift: [push+caseborder, pull-caseborder]
+        - ref: matrix_nano_home
+          shift: [mpull-caseborder, pull-caseborder]
   _right_nano:
     - what: polygon
       fillet: 1
@@ -124,12 +136,29 @@ outlines:
         - ref: mirror_matrix_nano_home
           shift: [mpull, pull]
 
+  left_thumb_large:
+    - what: polygon
+      points:
+      #end of nano
+        - ref: matrix_nano_home
+          shift: [push+caseborder, pull +1.5 -caseborder]
+      #Inner home to cover empty space
+        - ref: matrix_inner_home
+      #Pointer bottom
+        - ref: matrix_index_bottom
+          shift: [mpull + 2, mpull +5]
+      #Thumb 
+        - ref: thumbkeys_space_cluster
+          shift: [-u -board_margin-caseborder, mpull - board_margin-caseborder]
+        - ref: thumbkeys_space_cluster
+          shift: [u + board_margin+caseborder, mpull -board_margin-caseborder]
+      fillet: 1
   left_thumb:
     - what: polygon
       points:
       #end of nano
         - ref: matrix_nano_home
-          shift: [push, pull +1.5]
+          shift: [push, pull + 1.5]
       #Inner home to cover empty space
         - ref: matrix_inner_home
       #Pointer bottom
@@ -231,6 +260,73 @@ outlines:
         #Bottom left corner
         - ref: matrix_outer_bottom
           shift: [mpull, mpull]
+  _left_main_keys_large:
+    - what: polygon
+      fillet: 1
+      operation: stack
+      points:
+      # TOP
+        #Top left corner
+        - ref: matrix_outer_num
+          shift: [mpull - caseborder, mpush + caseborder]
+        #Top pinky right
+        - ref: matrix_pinky_num
+          shift: [push-1-caseborder, mpush+caseborder]
+        #Top ring left
+        - ref: matrix_ring_num
+          shift: [mpull-caseborder, mpush+caseborder]
+        #top ring right
+        - ref: matrix_ring_num
+          shift: [push -1 -caseborder, mpush+ caseborder]
+        #Top Middle left
+        - ref: matrix_middle_num
+          shift: [mpull-caseborder, mpush+caseborder]
+        # top middle right
+        - ref: matrix_middle_num
+          shift: [mpush+caseborder, mpush+caseborder]
+        #Top pointer left
+        - ref: matrix_index_num
+          shift: [pull +1+caseborder, mpush+caseborder] 
+        #Top pointer right
+        - ref: matrix_index_num
+          shift: [push+caseborder, mpush+caseborder]
+        #Top inner left
+        - ref: matrix_inner_num
+          shift: [pull - .99+caseborder, mpush+caseborder]
+        #Top right corner
+        - ref: matrix_inner_num
+          shift: [mpush+caseborder, mpush+caseborder]
+      #BOTTOM
+        #Bottom right corner
+        - ref: matrix_inner_bottom
+          shift: [mpush+caseborder, mpull-caseborder]
+        #Bottom inner left
+        - ref: matrix_inner_bottom
+          shift: [pull-caseborder, mpull-caseborder]
+        #Bottom pointer right
+        - ref: matrix_index_bottom
+          shift: [push+caseborder, mpull-caseborder]
+        #Bottom pointer left
+        - ref: matrix_index_bottom
+          shift: [mpull + 1-caseborder, mpull-caseborder]
+        #Bottom middle right
+        - ref: matrix_middle_bottom
+          shift: [push-caseborder, mpull-caseborder]
+        #Bottom middle left
+        - ref: matrix_middle_bottom
+          shift: [pull-1+caseborder, mpull-caseborder]
+        #Bottom ring right
+        - ref: matrix_ring_bottom
+          shift: [push+caseborder, mpull-caseborder]
+        #Bottom ring left
+        - ref: matrix_ring_bottom
+          shift: [pull +1+caseborder, mpull-caseborder]
+        #Bottom pinky right
+        - ref: matrix_pinky_bottom
+          shift: [mpush+caseborder, mpull-caseborder]
+        #Bottom left corner
+        - ref: matrix_outer_bottom
+          shift: [mpull-caseborder, mpull-caseborder]
   _right_main_keys:
     - what: polygon
       fillet: 1
@@ -307,6 +403,22 @@ outlines:
     - what: outline
       name: _left_main_keys
       operation: add
+
+  left_board_large:
+    - what: outline
+      name: _left_nano_large
+    - what: outline
+      name: left_thumb_large
+    - what: outline
+      name: _left_main_keys_large
+      operation: add
+
+  large_board:
+    - what: outline
+      name: left_board_large
+    - operation: subtract
+      name: keys
+
 
   right_board:
     - what: outline
@@ -478,4 +590,6 @@ pcbs:
         adjust:
           shift: [4, 10]
           rotate: -90
-
+cases:
+  plate:
+    - name: large_board
